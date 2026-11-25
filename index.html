@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إيكو ساينس | منصة العلوم والبيئة التعليمية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f8f6;
+      --surface: #ffffff;
+      --surface-alt: #eaf4ef;
+      --text: #162620;
+      --muted: #546b62;
+      --primary: #0f766e;
+      --primary-hover: #0b5c56;
+      --accent: #10b981;
+      --border: #d7e6df;
+      --danger: #dc2626;
+      --shadow: 0 10px 25px rgba(15, 118, 110, 0.08);
+      --radius: 16px;
+    }
+
+    body.dark {
+      --bg: #0c1715;
+      --surface: #132320;
+      --surface-alt: #1a302b;
+      --text: #e9f5f0;
+      --muted: #9db8ae;
+      --primary: #14b8a6;
+      --primary-hover: #0d9488;
+      --accent: #34d399;
+      --border: #233f39;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    body.dark header { background: rgba(19, 35, 32, 0.88); }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--primary);
+    }
+    .logo-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-weight: 600;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    .theme-btn {
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 44px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .pill {
+      display: inline-block;
+      background: var(--surface-alt);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin-bottom: 24px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform 0.15s, background 0.2s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .progress-card h3 { margin-bottom: 8px; }
+    .progress-bar-wrap {
+      height: 12px;
+      background: var(--surface-alt);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 14px 0 10px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.35s ease;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+      text-align: center;
+    }
+    .stat-box {
+      background: var(--surface-alt);
+      padding: 12px 8px;
+      border-radius: 12px;
+    }
+    .stat-box strong { display: block; font-size: 1.3rem; color: var(--primary); }
+    .stat-box span { font-size: 0.85rem; color: var(--muted); }
+
+    /* Section Header */
+    section { padding: 44px 0; }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .section-head h2 { font-size: 1.75rem; }
+    .section-head p { color: var(--muted); }
+
+    /* Filter & Search */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+    }
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .search-input {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      min-width: 240px;
+      font-family: inherit;
+    }
+
+    /* Courses Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--surface-alt);
+      color: var(--primary);
+    }
+    .done-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .card h3 { font-size: 1.18rem; }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    /* Fact Banner */
+    .fact-box {
+      background: linear-gradient(135deg, var(--primary), #065f46);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .fact-box button {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* Quiz */
+    .quiz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .option-btn {
+      text-align: right;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .option-btn:hover:not(:disabled) { border-color: var(--primary); }
+    .option-btn.correct { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+    .option-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+    .quiz-feedback {
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--surface-alt);
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 200;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      max-width: 680px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 28px;
+      border: 1px solid var(--border);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .close-btn {
+      background: var(--surface-alt);
+      border: none;
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+    }
+    .lesson-points {
+      margin: 16px 0 22px;
+      padding-right: 20px;
+    }
+    .lesson-points li { margin-bottom: 8px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 820px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">
+        <span class="logo-badge">🌿</span>
+        <span>إيكو ساينس</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#lessons">الدروس</a>
+        <a href="#facts">معلومة علمية</a>
+        <a href="#quiz">الاختبار التفاعلي</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle">🌙 الوضع الليلي</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="pill">منصة العلوم والبيئة التفاعلية</span>
+          <h1>تعلّم العلوم والبيئة بأسلوب مبسّط وعملي في <span style="color: var(--primary);">إيكو ساينس</span></h1>
+          <p>دروس علمية منظمة، مفاهيم بيئية حديثة، واختبارات تفاعلية فورية تساعد الطلاب والمعلمين على استكشاف علوم الطبيعة والطاقة المستدامة.</p>
+          <div class="hero-actions">
+            <a href="#lessons" class="btn btn-primary">ابدأ التعلّم الآن</a>
+            <a href="#quiz" class="btn btn-outline">اختبر معلوماتك</a>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <h3>تقدمك التعليمي</h3>
+          <p style="color: var(--muted); font-size: 0.92rem;">أكمل الدروس لرفع نسبة إنجازك في المنصة.</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:700;">
+            <span id="progressText">0% مكتمل</span>
+            <span id="completedCount">0 / 6 دروس</span>
+          </div>
+          <div class="stats-row">
+            <div class="stat-box"><strong>6</strong><span>دروس متكاملة</span></div>
+            <div class="stat-box"><strong>4</strong><span>مسارات علمية</span></div>
+            <div class="stat-box"><strong>5</strong><span>أسئلة اختبار</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lessons -->
+    <section id="lessons">
+      <div class="section-head">
+        <div>
+          <h2>الدروس العلمية</h2>
+          <p>اختر الدرس المناسب لبدء القراءة وتتبع إنجازك.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="filters" id="categoryFilters">
+          <button class="filter-btn active" data-cat="الكل">الكل</button>
+          <button class="filter-btn" data-cat="البيئة">البيئة</button>
+          <button class="filter-btn" data-cat="الطاقة">الطاقة</button>
+          <button class="filter-btn" data-cat="الأحياء">الأحياء</button>
+          <button class="filter-btn" data-cat="المناخ">المناخ</button>
+        </div>
+        <input type="search" class="search-input" id="searchInput" placeholder="ابحث عن درس..." />
+      </div>
+
+      <div class="grid" id="lessonsGrid"></div>
+    </section>
+
+    <!-- Science Fact -->
+    <section id="facts">
+      <div class="fact-box">
+        <div>
+          <div style="font-weight:800; margin-bottom:6px;">💡 هل تعلم؟ (معلومة من إيكو ساينس)</div>
+          <p id="factText" style="max-width: 720px;"></p>
+        </div>
+        <button id="nextFactBtn">معلومة أخرى ↻</button>
+      </div>
+    </section>
+
+    <!-- Interactive Quiz -->
+    <section id="quiz">
+      <div class="section-head" style="justify-content:center; text-align:center;">
+        <div>
+          <h2>اختبر معلوماتك</h2>
+          <p>أجب عن الأسئلة العلمية التالية واحصل على نتيجتك فورًا.</p>
+        </div>
+      </div>
+
+      <div class="quiz-card" id="quizContainer"></div>
+    </section>
+  </main>
+
+  <!-- Lesson Modal -->
+  <div class="modal-backdrop" id="lessonModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <span class="tag" id="modalCategory"></span>
+          <h2 id="modalTitle" style="margin-top:8px;"></h2>
+        </div>
+        <button class="close-btn" id="closeModal">✕</button>
+      </div>
+      <p id="modalSummary" style="color: var(--muted);"></p>
+      <ul class="lesson-points" id="modalPoints"></ul>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-primary" id="toggleCompleteBtn">تحديد كدرس مكتمل</button>
+        <span id="modalDuration" style="color: var(--muted); font-size: 0.9rem;"></span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      © 2026 منصة <strong>إيكو ساينس (Eco Science)</strong> — تعليم العلوم والبيئة للجميع.
+    </div>
+  </footer>
+
+  <script>
+    const lessons = [
+      {
+        id: 1,
+        title: "النظم البيئية والتوازن الطبيعي",
+        category: "البيئة",
+        level: "مبتدئ",
+        duration: "10 دقائق",
+        summary: "تعرّف على مكونات النظام البيئي الحيّة وغير الحيّة وكيف تحافظ السلاسل الغذائية على توازن الطبيعة.",
+        points: [
+          "يتكوّن النظام البيئي من عوامل حيوية (نباتات، حيوانات، كائنات دقيقة) وعوامل غير حيوية (الماء، الهواء، التربة، الضوء).",
+          "تبدأ السلسلة الغذائية بالمنتِجات (النباتات) ثم المستهلكات وتنتهي بالمحلّلات التي تعيد العناصر للتربة.",
+          "أي خلل في أحد عناصر السلسلة يؤثر مباشرة على استقرار النظام البيئي بأكمله."
+        ]
+      },
+      {
+        id: 2,
+        title: "الطاقة الشمسية وطاقة الرياح",
+        category: "الطاقة",
+        level: "مبتدئ",
+        duration: "12 دقيقة",
+        summary: "كيف نحوّل ضوء الشمس وحركة الرياح إلى كهرباء نظيفة تقلل الانبعاثات الكربونية؟",
+        points: [
+          "تعتمد الألواح الشمسية على الخلايا الكهروضوئية لتحويل الفوتونات الضوئية إلى تيار كهربائي مباشر.",
+          "توربينات الرياح تحوّل الطاقة الحركية للهواء إلى طاقة ميكانيكية ثم كهربائية عبر مولّد.",
+          "تُعد الطاقة المتجددة حجر الأساس للحد من الاحتباس الحراري وتقليل الاعتماد على الوقود الأحفوري."
+        ]
+      },
+      {
+        id: 3,
+        title: "عملية البناء الضوئي في النبات",
+        category: "الأحياء",
+        level: "متوسط",
+        duration: "15 دقيقة",
+        summary: "فهم المعادلة الحيوية التي يصنع بها النبات غذاءه ويطلق الأكسجين اللازم للحياة على الأرض.",
+        points: [
+          "تحدث عملية البناء الضوئي داخل البلاستيدات الخضراء بوجود صبغة الكلوروفيل.",
+          "يستخدم النبات الماء وثاني أكسيد الكربون وطاقة الضوء لإنتاج الجلوكوز والأكسجين.",
+          "تمثّل النباتات والطحالب المصدر الأساسي للأكسجين والغذاء في المحيط الحيوي."
+        ]
+      },
+      {
+        id: 4,
+        title: "التغير المناخي والاحتباس الحراري",
+        category: "المناخ",
+        level: "متوسط",
+        duration: "14 دقيقة",
+        summary: "ما الفرق بين الطقس والمناخ؟ ولماذا يؤدي ارتفاع غازات الدفيئة إلى احترار الكوكب؟",
+        points: [
+          "الغازات الدفيئة مثل ثاني أكسيد الكربون والميثان تحبس جزءًا من حرارة الشمس داخل الغلاف الجوي.",
+          "زيادة النشاط الصناعي وحرق الوقود الأحفوري رفعت تركيز هذه الغازات بمعدلات غير مسبوقة.",
+          "الحلول تشمل كفاءة الطاقة، التشجير، التحول للطاقة النظيفة، وتقليل الهدر."
+        ]
+      },
+      {
+        id: 5,
+        title: "دورة الماء في الطبيعة",
+        category: "البيئة",
+        level: "مبتدئ",
+        duration: "8 دقائق",
+        summary: "رحلة قطرة الماء بين التبخر والتكثف والهطول والجريان السطحي والمياه الجوفية.",
+        points: [
+          "تُحرك طاقة الشمس عملية التبخر من البحار والمحيطات والنتح من أوراق النباتات.",
+          "يبرد البخار في طبقات الجو العليا ليتكثف مكوّنًا السحب ثم يسقط مطرًا أو ثلجًا.",
+          "الحفاظ على الموارد المائية ضروري لأن المياه العذبة الصالحة للشرب تمثل نسبة ضئيلة من مياه الأرض."
+        ]
+      },
+      {
+        id: 6,
+        title: "التنوع الحيوي وحماية الكائنات",
+        category: "الأحياء",
+        level: "متقدم",
+        duration: "16 دقيقة",
+        summary: "لماذا يُعد تنوع الكائنات الحية صمام أمان للغذاء والدواء واستقرار الكوكب؟",
+        points: [
+          "يشمل التنوع الحيوي التنوع الجيني وتنوع الأنواع وتنوع النظم البيئية.",
+          "تؤدي إزالة الغابات والتلوث إلى فقدان الموائل الطبيعية وتهديد آلاف الأنواع بالانقراض.",
+          "المحميات الطبيعية والاستهلاك المستدام يساهمان في استعادة التوازن الحيوي."
+        ]
+      }
+    ];
+
+    const facts = [
+      "تنتج العوالق النباتية في المحيطات ما يقارب 50% إلى 70% من الأكسجين الموجود في الغلاف الجوي للأرض.",
+      "شجرة واحدة ناضجة يمكنها امتصاص نحو 21 كيلوجرامًا من ثاني أكسيد الكربون سنويًا.",
+      "إعادة تدوير علبة ألومنيوم واحدة توفّر طاقة تكفي لتشغيل جهاز تلفاز لمدة 3 ساعات.",
+      "تغطي المياه نحو 71% من سطح الأرض، لكن أقل من 1% منها فقط مياه عذبة متاحة بسهولة للاستخدام البشري."
+    ];
+
+    const quizQuestions = [
+      {
+        q: "ما الجزء المسؤول عن امتصاص الضوء في عملية البناء الضوئي؟",
+        options: ["الميتوكوندريا", "البلاستيدات الخضراء (الكلوروفيل)", "النواة", "الجدار الخلوي"],
+        answer: 1,
+        explanation: "تحتوي البلاستيدات الخضراء على صبغة الكلوروفيل التي تمتص الطاقة الضوئية."
+      },
+      {
+        q: "أي مما يلي يُعد من مصادر الطاقة المتجددة؟",
+        options: ["الفحم الحجري", "الغاز الطبيعي", "طاقة الرياح", "البترول"],
+        answer: 2,
+        explanation: "طاقة الرياح مصدر طبيعي متجدد لا ينضب ولا يطلق انبعاثات كربونية عند التوليد."
+      },
+      {
+        q: "ما الدور الأساسي للمحلّلات في النظام البيئي؟",
+        options: ["إنتاج الضوء", "تفكيك بقايا الكائنات وإعادة العناصر للتربة", "افتراس الحيوانات الكبيرة", "حبس الغازات الدفيئة"],
+        answer: 1,
+        explanation: "تحلل الفطريات والبكتيريا المواد العضوية الميتة لتغذية التربة من جديد."
+      },
+      {
+        q: "ما العملية التي يتحول فيها بخار الماء إلى سحب في الغلاف الجوي؟",
+        options: ["التبخر", "التكثف", "الانصهار", "التسامي"],
+        answer: 1,
+        explanation: "التكثف هو تحول بخار الماء الغازي إلى قطيرات ماء صغيرة عندما يبرد في الأعلى."
+      },
+      {
+        q: "أي غاز يُعد المساهم الأكبر في ظاهرة الاحتباس الحراري الناتجة عن النشاط البشري؟",
+        options: ["الأكسجين", "النيتروجين", "ثاني أكسيد الكربون", "الهيليوم"],
+        answer: 2,
+        explanation: "انبعاثات ثاني أكسيد الكربون الناتجة عن حرق الوقود الأحفوري هي المحرك الرئيسي للاحترار العالمي."
+      }
+    ];
+
+    // State
+    let completedLessons = JSON.parse(localStorage.getItem("eco_completed") || "[]");
+    let activeCategory = "الكل";
+    let activeLessonId = null;
+    let currentFactIdx = 0;
+
+    // Theme
+    const themeToggle = document.getElementById("themeToggle");
+    if (localStorage.getItem("eco_theme") === "dark") {
+      document.body.classList.add("dark");
+      themeToggle.textContent = "☀️ الوضع النهاري";
+    }
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("eco_theme", isDark ? "dark" : "light");
+      themeToggle.textContent = isDark ? "☀️ الوضع النهاري" : "🌙 الوضع الليلي";
+    });
+
+    // Progress
+    function updateProgress() {
+      const pct = Math.round((completedLessons.length / lessons.length) * 100);
+      document.getElementById("progressBar").style.width = pct + "%";
+      document.getElementById("progressText").textContent = pct + "% مكتمل";
+      document.getElementById("completedCount").textContent = `${completedLessons.length} / ${lessons.length} دروس`;
+    }
+
+    // Render Lessons
+    function renderLessons() {
+      const grid = document.getElementById("lessonsGrid");
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const filtered = lessons.filter(l => {
+        const matchCat = activeCategory === "الكل" || l.category === activeCategory;
+        const matchSearch = l.title.toLowerCase().includes(query) || l.summary.toLowerCase().includes(query);
+        return matchCat && matchSearch;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `<p style="color:var(--muted);">لا توجد دروس مطابقة لبحثك حاليًا.</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(l => {
+        const isDone = completedLessons.includes(l.id);
+        return `
+          <article class="card">
+            <div>
+              <div class="card-top">
+                <span class="tag">${l.category}</span>
+                ${isDone ? '<span class="done-badge">✓ مكتمل</span>' : `<span style="font-size:0.8rem;color:var(--muted);">${l.level}</span>`}
+              </div>
+              <h3 style="margin:12px 0 8px;">${l.title}</h3>
+              <p>${l.summary}</p>
+            </div>
+            <div>
+              <div class="card-meta">
+                <span>⏱ ${l.duration}</span>
+                <button class="btn btn-primary" style="padding:8px 14px; font-size:0.9rem;" onclick="openLesson(${l.id})">
+                  افتح الدرس
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // Filters & Search
+    document.getElementById("categoryFilters").addEventListener("click", (e) => {
+      if (!e.target.classList.contains("filter-btn")) return;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      activeCategory = e.target.dataset.cat;
+      renderLessons();
+    });
+    document.getElementById("searchInput").addEventListener("input", renderLessons);
+
+    // Modal
+    const modal = document.getElementById("lessonModal");
+    window.openLesson = function(id) {
+      const lesson = lessons.find(l => l.id === id);
+      if (!lesson) return;
+      activeLessonId = id;
+      document.getElementById("modalCategory").textContent = lesson.category;
+      document.getElementById("modalTitle").textContent = lesson.title;
+      document.getElementById("modalSummary").textContent = lesson.summary;
+      document.getElementById("modalDuration").textContent = `المدة التقديرية: ${lesson.duration}`;
+      document.getElementById("modalPoints").innerHTML = lesson.points.map(p => `<li>${p}</li>`).join("");
+      updateModalBtn();
+      modal.classList.add("open");
+    };
+
+    function updateModalBtn() {
+      const btn = document.getElementById("toggleCompleteBtn");
+      const isDone = completedLessons.includes(activeLessonId);
+      btn.textContent = isDone ? "✓ تم إكمال الدرس (إلغاء)" : "تحديد كدرس مكتمل";
+    }
+
+    document.getElementById("toggleCompleteBtn").addEventListener("click", () => {
+      if (completedLessons.includes(activeLessonId)) {
+        completedLessons = completedLessons.filter(i => i !== activeLessonId);
+      } else {
+        completedLessons.push(activeLessonId);
+      }
+      localStorage.setItem("eco_completed", JSON.stringify(completedLessons));
+      updateModalBtn();
+      updateProgress();
+      renderLessons();
+    });
+
+    document.getElementById("closeModal").addEventListener("click", () => modal.classList.remove("open"));
+    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+
+    // Facts
+    function showFact() {
+      document.getElementById("factText").textContent = facts[currentFactIdx];
+    }
+    document.getElementById("nextFactBtn").addEventListener("click", () => {
+      currentFactIdx = (currentFactIdx + 1) % facts.length;
+      showFact();
+    });
+
+    // Quiz
+    let qIndex = 0;
+    let score = 0;
+
+    function renderQuiz() {
+      const box = document.getElementById("quizContainer");
+      if (qIndex >= quizQuestions.length) {
+        box.innerHTML = `
+          <div style="text-align:center;">
+            <div style="font-size:2.5rem; margin-bottom:10px;">🎉</div>
+            <h3>انتهى الاختبار!</h3>
+            <p style="margin:10px 0 20px; font-size:1.1rem;">نتيجتك: <strong>${score} من ${quizQuestions.length}</strong></p>
+            <button class="btn btn-primary" onclick="restartQuiz()">إعادة الاختبار</button>
+          </div>
+        `;
+        return;
+      }
+
+      const item = quizQuestions[qIndex];
+      box.innerHTML = `
+        <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:0.9rem; margin-bottom:10px;">
+          <span>السؤال ${qIndex + 1} من ${quizQuestions.length}</span>
+          <span>النقاط: ${score}</span>
+        </div>
+        <h3>${item.q}</h3>
+        <div class="quiz-options">
+          ${item.options.map((opt, idx) => `<button class="option-btn" onclick="answerQuiz(${idx}, this)">${opt}</button>`).join("")}
+        </div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <button class="btn btn-primary" id="nextQBtn" style="display:none;" onclick="nextQuestion()">السؤال التالي ←</button>
+      `;
+    }
+
+    window.answerQuiz = function(selectedIdx, btn) {
+      const item = quizQuestions[qIndex];
+      const buttons = document.querySelectorAll(".option-btn");
+      buttons.forEach(b => b.disabled = true);
+
+      const fb = document.getElementById("quizFeedback");
+      fb.style.display = "block";
+
+      if (selectedIdx === item.answer) {
+        btn.classList.add("correct");
+        score++;
+        fb.innerHTML = `<strong>إجابة صحيحة!</strong> ${item.explanation}`;
+      } else {
+        btn.classList.add("wrong");
+        buttons[item.answer].classList.add("correct");
+        fb.innerHTML = `<strong>إجابة غير صحيحة.</strong> ${item.explanation}`;
+      }
+      document.getElementById("nextQBtn").style.display = "inline-block";
+    };
+
+    window.nextQuestion = function() {
+      qIndex++;
+      renderQuiz();
+    };
+
+    window.restartQuiz = function() {
+      qIndex = 0;
+      score = 0;
+      renderQuiz();
+    };
+
+    // Init
+    updateProgress();
+    renderLessons();
+    showFact();
+    renderQuiz();
+  </script>
+</body>
+</html>
